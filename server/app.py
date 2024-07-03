@@ -69,7 +69,7 @@ class Logout(Resource):
     def delete(self):
         session['user_id'] = None
 
-        return {}, 401
+        return {}, 204
 
 class TripIndex(Resource):
     def get(self):
@@ -98,7 +98,7 @@ class TripIndex(Resource):
             title=title,
             description=description,
             start_date=start_date,
-            end_date=end_date
+            end_date=end_date,
             user_id=session['user_id']
         )
 
@@ -110,6 +110,43 @@ class TripIndex(Resource):
             abort(422, 'Failed to create trip')
 
         return new_trip.to_dict(), 201
+
+class DestinationIndex(Resource):
+    def get(self):
+        if not session.get('user_id'):
+            return {'message': 'Unathorized'}, 401
+
+        destinations = [destination.to_dict() for destination in Destination.query.all()]
+
+        return (destinations), 200
+
+    def post(self):
+        if not session.get('user_id'):
+            return {'message': 'Unauthorized'}. 401
+
+        json_data = request.get_json()
+
+        name = json.data.get('name')
+        description = json.data.get('description')
+
+        if not all(key in json_data for key in ('name', 'description')):
+            return (422, 'Missing required fields')
+        
+        new_destination = Destination(
+            name=name,
+            description=description
+            user_id=session['user_id']
+        )
+
+        try:
+            db.session.add(new_destination)
+            db.session.commit()
+        except Exception as e:
+            db.sesion.rollback()
+            abort(422, 'Failed to create desination')
+
+        return new_destination.to_dict(), 201
+
 
 
 api.add_resource(Signup, '/signup', endpoint='signup')
