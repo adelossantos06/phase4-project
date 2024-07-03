@@ -9,7 +9,7 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
-    email = db.Column(db,String, unique=True, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
 
     @property
     def password_hash(self):
@@ -27,7 +27,7 @@ class User(db.Model, SerializerMixin):
             self._password_hash,password.encode('utf-8')
         )
 
-    def__repr__(self):
+    def __repr__(self):
         return f'User {self.username}, ID: {self.id}'
 
 class Trip(db.Model, SerializerMixin):
