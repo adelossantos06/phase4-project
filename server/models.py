@@ -10,6 +10,7 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String, unique=True, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True, nullable=False)
+    trips = db.relationship('Trip', backref='user')
 
     @property
     def password_hash(self):
@@ -39,6 +40,7 @@ class Trip(db.Model, SerializerMixin):
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer(), db.ForeignKey("users.id"))
+    destinations = db.relationship('Destination', backref='trip')
 
     def __repr__(self):
         return f'Trip {self.title}, ID: {self.id}'
@@ -49,6 +51,7 @@ class Destination(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
+    trip_id = db.Column(db.Integer, db.ForeignKey('trip_id'), nullable=False)
 
     def __repr__(self):
         return f'Destination: {self.name}, ID: {self.id}'
