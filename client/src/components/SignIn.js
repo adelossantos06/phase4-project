@@ -9,7 +9,7 @@ function SignIn() {
     }
 
     const handleSubmit = (values) => {
-        console.log(values); // Replace with your form submission logic
+        console.log(values);
     };
 
     return (
@@ -23,11 +23,11 @@ function SignIn() {
                     <Form>
                         <div>
                             <label>Username:</label>
-                            <Field id="username" name="username" ></Field>
+                            <Field id="username" name="username" className="usernameInput"></Field>
                         </div>
                         <div>
                             <label>Password:</label>
-                            <Field id="username" name="username"></Field>
+                            <Field id="username" name="username" type="password" className="passwordInput"></Field>
                         </div>
                         <button type="submit">Submit</button>
                     </Form>
