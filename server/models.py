@@ -51,7 +51,7 @@ class Destination(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
-    trip_id = db.Column(db.Integer, db.ForeignKey('trip_id'), nullable=False)
+    trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=False)
 
     def __repr__(self):
         return f'Destination: {self.name}, ID: {self.id}'

@@ -61,3 +61,20 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+.signup {
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+
+}
+
+.signup-button {
+    background-color: rgb(18, 93, 18);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}

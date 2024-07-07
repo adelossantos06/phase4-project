@@ -5,6 +5,7 @@
 # Remote library imports
 from flask import Flask, request, session, abort
 from flask_restful import Resource
+from flask_cors import CORS
 
 # Local imports
 from config import app, db, api
@@ -122,11 +123,11 @@ class DestinationIndex(Resource):
 
     def post(self):
         if not session.get('user_id'):
-            return {'message': 'Unauthorized'}. 401
+            return {'message': 'Unauthorized'}, 401
 
         json_data = request.get_json()
 
-        name = json.data.get('name')
+        name = json_data.get('name')
         description = json.data.get('description')
 
         if not all(key in json_data for key in ('name', 'description')):
@@ -134,7 +135,7 @@ class DestinationIndex(Resource):
         
         new_destination = Destination(
             name=name,
-            description=description
+            description=description,
             user_id=session['user_id']
         )
 
