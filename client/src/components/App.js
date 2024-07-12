@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import Trips from "./Trips"
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+import { UserProvider } from "./UserContext";
 
 function App() {
   const [data, setData] = useState(null);
@@ -15,12 +17,16 @@ function App() {
 
 
   return (
-    <Router>
-      <Switch>
-        <Route path="/signin" component={SignIn} />
-        <Route path="/signup" component={SignUp} />
-      </Switch>
-    </Router>
+    <UserProvider>
+      <Router>
+        <Switch>
+          <Route path="/signin" component={SignIn} />
+          <Route path="/signup" component={SignUp} />
+          <Route path="/trips" component={Trips} />
+
+        </Switch>
+      </Router>
+    </UserProvider>
   );
 
 }

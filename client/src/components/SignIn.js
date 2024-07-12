@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import "./SignIn.css";
 import { Formik, Form, Field } from 'formik';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
+import { UserContext } from './UserContext';
 
 function SignIn() {
     const history = useHistory();
+    const { setUsername } = useContext(UserContext)
 
 
     function handleSubmit(values) {
@@ -24,6 +26,7 @@ function SignIn() {
                     console.error(data.error)
                     alert(data.error)
                 } else {
+                    setUsername(data.username)
                     history.push('/trips')
                 }
             })
@@ -32,6 +35,7 @@ function SignIn() {
                 alert('An error occurred. Please try again')
             });
     };
+
 
 
 
