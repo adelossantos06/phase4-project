@@ -11,31 +11,36 @@ function SignIn() {
 
 
     function handleSubmit(values) {
-        fetch("http://127.0.0.1:5555/signin", {
+
+        fetch('http://localhost:5555/signin', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(values)
+            body: JSON.stringify(values),
         })
-            .then(res => res.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Invalid username or password');
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log(data);
                 if (data.error) {
-                    //TODO HANDLE ERROR
-                    console.error(data.error)
-                    alert(data.error)
+                    console.error(data.error);
+                    alert('Login failed. Please check your credentials.');
                 } else {
-                    setUsername(data.username)
-                    history.push('/trips')
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('user_id', data.id);
+                    setUsername(data.username);
+                    history.push('/trips');
                 }
             })
             .catch(error => {
-                console.error('Error', error)
-                alert('An error occurred. Please try again')
+                console.error('Login Error:', error);
+                alert('Login failed. Please check your credentials.');
             });
-    };
-
+    }
 
 
 

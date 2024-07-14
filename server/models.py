@@ -55,8 +55,10 @@ class Destination(db.Model, SerializerMixin):
     __tablename__ = 'destinations'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    description = db.Column(db.String, nullable=False)
+    city = db.Column(db.String, nullable=False)
+    state = db.Column(db.String, nullable=False)
+    country = db.Column(db.String, nullable=False)
+    time_zone = db.Column(db.String, nullable=False)
     trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=False)
 
     def __repr__(self):

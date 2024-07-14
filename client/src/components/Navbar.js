@@ -8,7 +8,7 @@ function NavBar() {
         <nav className='nav'>
             <ul>
                 <li>
-                    <NavLink to="/trips">
+                    <NavLink to="/createtrip">
                         <button className="navButton" >Create New Trip</button>
                     </NavLink>
                 </li>
