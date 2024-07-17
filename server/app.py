@@ -1,4 +1,4 @@
-from flask import Flask, request, session, abort, jsonify
+from flask import Flask, request, session, abort, jsonify, make_response
 from flask_restful import Resource
 # from werkzeug.local import Local
 # from flask_cors import CORS
@@ -48,6 +48,8 @@ class CheckSession(Resource):
         return {'error': 'Unauthorized'}, 401
 
 class Login(Resource):
+
+        
     def post(self):
         
         data = request.get_json()
@@ -77,25 +79,17 @@ class Logout(Resource):
 
 class TripIndex(Resource):
     def get(self):
-        if not session.get('user_id'):
-            return {'message': 'Unauthorized'}, 401
-
-        trips = [trip.to_dict() for trip in Trip.query.filter_by(user_id=session['user_id']).all()]
-        return trips, 200
+        trips = Trip.query.all()
+        return [trip.to_dict() for trip in trips], 200
 
     def post(self):
-        if not session.get('user_id'):
-            return {'message': 'Unauthorized'}, 401
-
         json_data = request.get_json()
 
         title = json_data.get('title')
         description = json_data.get('description')
         start_date = json_data.get('start_date')
         end_date = json_data.get('end_date')
-        # destinations = json_data.get('destinations')
 
-        # if not all([title, description, start_date, end_date, destinations]):
         if not all([title, description, start_date, end_date]):
             return {'error': 'Missing required fields'}, 422
 
@@ -104,29 +98,27 @@ class TripIndex(Resource):
             description=description,
             start_date=start_date,
             end_date=end_date,
-            user_id=session['user_id']
+            # user_id=session['user_id']  # Uncomment if using session-based authentication
         )
 
         try:
             db.session.add(new_trip)
-            db.session.commit()
-
-            # for dest in destinations:
-            #     new_destination = Destination(
-            #         city=dest['city'],
-            #         state=dest['state'],
-            #         country=dest['country'],
-            #         time_zone=dest['time_zone'],
-            #         trip_id=new_trip.id
-            #     )
-            #     db.session.add(new_destination)
-
             db.session.commit()
         except Exception as e:
             db.session.rollback()
             return {'error': 'Failed to create trip'}, 422
 
         return new_trip.to_dict(), 201
+
+    def delete(self, trip_id):
+        trip = Trip.query.get(trip_id)
+        if not trip:
+            return {'message': 'Trip not found'}, 404
+        
+        db.session.delete(trip)
+        db.session.commit()
+
+        return {}, 204
 
 class DestinationIndex(Resource):
     def get(self):
@@ -173,6 +165,7 @@ api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Login, '/signin', endpoint='signin')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(TripIndex, '/trips', endpoint='trips')
+api.add_resource(TripIndex, '/trips/<int:trip_id>', endpoint='trip')
 api.add_resource(DestinationIndex, '/destinations', endpoint='destinations')
 
 if __name__ == '__main__':

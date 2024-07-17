@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Trips from "./Trips"
+
+
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import { UserProvider } from "./UserContext";
 import CreateTrip from "./CreateTrip";
@@ -25,6 +27,7 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/trips" component={Trips} />
           <Route path="/createtrip" component={CreateTrip} />
+
         </Switch>
       </Router>
     </UserProvider>

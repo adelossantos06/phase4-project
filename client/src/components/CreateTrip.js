@@ -15,16 +15,18 @@ function CreateTrip() {
     function handleSubmit(e) {
         e.preventDefault();
 
-        const user_id = localStorage.getItem('user_id');
-        const authToken = localStorage.getItem('authToken');
+        // const user_id = localStorage.getItem('user_id');
+        // const authToken = localStorage.getItem('authToken');
 
         const formData = {
             title,
             start_date: startDate,
             end_date: endDate,
             description,
-            user_id: user_id
+            // user_id: user_id
         };
+
+        console.log(formData)
 
 
 
@@ -32,9 +34,10 @@ function CreateTrip() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`,
+                // 'Authorization': `Bearer ${authToken}`,
             },
             body: JSON.stringify(formData),
+            credentials: 'include'
         })
             .then(response => {
                 if (!response.ok) {
@@ -45,7 +48,7 @@ function CreateTrip() {
             .then(data => {
                 console.log('Trip created:', data);
                 setTrip([...trip, data]);
-                // Reset form or perform other actions
+                // NOT WORKING ?
                 setTitle("");
                 setStartDate("");
                 setEndDate("");
@@ -61,55 +64,55 @@ function CreateTrip() {
 
 
     return (
-
-
-        <div className="create-trip-container">
-            <h2>Create a New Trip</h2>
-            <form className="create-trip-form" onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label>Trip Title:</label>
-                    <input
-                        type="text"
-                        id="trip-title"
-                        name="trip-title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Start Date:</label>
-                    <input
-                        type="date"
-                        id="start-date"
-                        name="start-date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label>End Date:</label>
-                    <input
-                        type="date"
-                        id="end-date"
-                        name="end-date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Description:</label>
-                    <textarea
-                        id="description"
-                        name="description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    ></textarea>
-                </div>
-                <button type="submit">Create Trip</button>
-            </form >
+        <>
             <NavBar />
-        </div >
+            <div className="create-trip-container">
+                <h2>Create a New Trip</h2>
+                <form className="create-trip-form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label>Trip Title:</label>
+                        <input
+                            type="text"
+                            id="trip-title"
+                            name="trip-title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Start Date:</label>
+                        <input
+                            type="date"
+                            id="start-date"
+                            name="start-date"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>End Date:</label>
+                        <input
+                            type="date"
+                            id="end-date"
+                            name="end-date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Description:</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        ></textarea>
+                    </div>
+                    <button type="submit">Create Trip</button>
+                </form >
 
+            </div >
+        </>
     );
 }
 

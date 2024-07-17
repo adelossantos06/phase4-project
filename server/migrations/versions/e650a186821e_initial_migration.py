@@ -1,8 +1,8 @@
-"""Initial migration.
+"""initial migration
 
-Revision ID: 4aa3c9889b77
+Revision ID: e650a186821e
 Revises: 
-Create Date: 2024-07-07 17:33:40.067859
+Create Date: 2024-07-14 13:07:53.292504
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4aa3c9889b77'
+revision = 'e650a186821e'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,16 +31,18 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('description', sa.String(), nullable=False),
-    sa.Column('start_date', sa.Date(), nullable=False),
-    sa.Column('end_date', sa.Date(), nullable=False),
+    sa.Column('start_date', sa.String(), nullable=False),
+    sa.Column('end_date', sa.String(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_trips_user_id_users')),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('destinations',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=False),
-    sa.Column('description', sa.String(), nullable=False),
+    sa.Column('city', sa.String(), nullable=False),
+    sa.Column('state', sa.String(), nullable=False),
+    sa.Column('country', sa.String(), nullable=False),
+    sa.Column('time_zone', sa.String(), nullable=False),
     sa.Column('trip_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['trip_id'], ['trips.id'], name=op.f('fk_destinations_trip_id_trips')),
     sa.PrimaryKeyConstraint('id')
