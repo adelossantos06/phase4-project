@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import "./SignIn.css";
 import { Formik, Form, Field } from 'formik';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 import { UserContext } from './UserContext';
 
-function SignIn() {
+function SignIn({ onSignIn }) {
     const history = useHistory();
     const { setUsername } = useContext(UserContext)
 
@@ -33,6 +33,7 @@ function SignIn() {
                     localStorage.setItem('authToken', data.token);
                     localStorage.setItem('user_id', data.id);
                     setUsername(data.username);
+                    onSignIn(data);
                     history.push('/trips');
                 }
             })
@@ -64,11 +65,11 @@ function SignIn() {
                 >
                     <Form>
                         <div>
-                            <label>Username:</label>
+                            <label >Username:</label>
                             <Field id="username" name="username" className="usernameInput" type="text" ></Field>
                         </div>
                         <div>
-                            <label>Password:</label>
+                            <label  >Password:</label>
                             <Field id="password" name="password" type="password" className="passwordInput" ></Field>
                         </div>
                         <button type="submit">Submit</button>

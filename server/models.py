@@ -7,6 +7,8 @@ from config import db
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
+    serialize_rules = ('-trips', '-_password_hash')
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
@@ -40,6 +42,8 @@ class User(db.Model, SerializerMixin):
 class Trip(db.Model, SerializerMixin):
     __tablename__ = 'trips'
 
+    serialize_rules = ('-destinations',) 
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
@@ -62,4 +66,4 @@ class Destination(db.Model, SerializerMixin):
     trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=False)
 
     def __repr__(self):
-        return f'Destination: {self.name}, ID: {self.id}'
+        return f'Destination in {self.city}, {self.state}, {self.country}, ID: {self.id}'

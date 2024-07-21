@@ -1,5 +1,6 @@
 import React from "react";
 import "./TripCard.css"
+import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 
 
 function TripCard({ id, title, startDate, endDate, description, handleDelete }) {
@@ -12,7 +13,14 @@ function TripCard({ id, title, startDate, endDate, description, handleDelete }) 
             <p>{description}</p>
             <div className="button-container">
                 <button className="button edit-trip">Edit Trip Details</button>
-                <button className="button trip-destinations">Add / View Destinations</button>
+                <NavLink
+                    to={{
+                        pathname: `/destinations/${id}`,
+                        state: { trip: { id, title, startDate, endDate, description, destinations: [] } }
+                    }}
+                >
+                    <button className="button trip-destinations">Add / View Destinations</button>
+                </NavLink>
                 <button onClick={() => handleDelete(id)} className="button delete-trip">Delete Trip</button>
             </div>
         </div>

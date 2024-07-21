@@ -12,6 +12,19 @@ from models import User, Trip, Destination
 def index():
     return '<h1>Project Servers</h1>'
 
+# @app.before_request
+# def check_if_logged_in():
+#     open_access_list = [
+#         'signup',
+#         'signin',
+#         'check_session',
+#         'trips'
+#     ]
+
+   
+#     if request.endpoint not in open_access_list and not session.get('user_id'):
+#         return {'error': 'Unauthorized'}, 401
+
 class Signup(Resource):
     def post(self):
         json = request.get_json()
@@ -39,8 +52,9 @@ class UserIndex(Resource):
 
 class CheckSession(Resource):
     def get(self):
+        
         user_id = session.get('user_id')
-
+        print(user_id)
         if user_id:
             user = User.query.filter_by(id=user_id).first()
             if user:
@@ -69,8 +83,8 @@ class Login(Resource):
             return {'error': 'Invalid username or password'}, 401
 
         session['user_id'] = user.id
-        
-        return user.to_dict(), 200
+        print(session)
+        return user.to_dict(), 201
 
 class Logout(Resource):
     def delete(self):
@@ -79,10 +93,14 @@ class Logout(Resource):
 
 class TripIndex(Resource):
     def get(self):
+        
         trips = Trip.query.all()
         return [trip.to_dict() for trip in trips], 200
 
     def post(self):
+        # if not session.get('user_id'):
+        #     return {'message': 'Unauthorized'}, 401
+
         json_data = request.get_json()
 
         title = json_data.get('title')
@@ -98,7 +116,7 @@ class TripIndex(Resource):
             description=description,
             start_date=start_date,
             end_date=end_date,
-            # user_id=session['user_id']  # Uncomment if using session-based authentication
+            # user_id=session['user_id'] 
         )
 
         try:
@@ -120,20 +138,29 @@ class TripIndex(Resource):
 
         return {}, 204
 
-class DestinationIndex(Resource):
-    def get(self):
-        if not session.get('user_id'):
-            return {'message': 'Unauthorized'}, 401
+class TripDetail(Resource):
+    def get(self, trip_id):
+        trip = Trip.query.get_or_404(trip_id)
+        return trip.to_dict()
 
-        destinations = [destination.to_dict() for destination in Destination.query.all()]
-        return destinations, 200
+    def delete(self, trip_id):
+        trip = Trip.query.get(trip_id)
+        if not trip:
+            return {'message': 'Trip not found'}, 404
 
-    def post(self):
-        if not session.get('user_id'):
-            return {'message': 'Unauthorized'}, 401
+        db.session.delete(trip)
+        db.session.commit()
+        return {}, 204
+        
+class TripDestinations(Resource):
+    def get(self, trip_id):
+        destinations = Destination.query.filter_by(trip_id=trip_id).all()
+        return [destination.to_dict() for destination in destinations], 200
 
+class AddDestination(Resource):
+    def post(self, trip_id):
         json_data = request.get_json()
-
+        print("Received data:", json_data)
         city = json_data.get('city')
         state = json_data.get('state')
         country = json_data.get('country')
@@ -147,7 +174,7 @@ class DestinationIndex(Resource):
             state=state,
             country=country,
             time_zone=time_zone,
-            trip_id=json_data.get('trip_id')
+            trip_id=trip_id
         )
 
         try:
@@ -155,9 +182,14 @@ class DestinationIndex(Resource):
             db.session.commit()
         except Exception as e:
             db.session.rollback()
+            print(f"Error:{e}")
             return {'error': 'Failed to create destination'}, 422
 
         return new_destination.to_dict(), 201
+
+      
+
+     
 
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(UserIndex, '/users', endpoint='users')
@@ -165,8 +197,9 @@ api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Login, '/signin', endpoint='signin')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(TripIndex, '/trips', endpoint='trips')
-api.add_resource(TripIndex, '/trips/<int:trip_id>', endpoint='trip')
-api.add_resource(DestinationIndex, '/destinations', endpoint='destinations')
+api.add_resource(TripDetail, '/trips/<int:trip_id>')
+api.add_resource(TripDestinations, '/trips/<int:trip_id>/destinations')
+api.add_resource(AddDestination, '/trips/<int:trip_id>/destinations')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

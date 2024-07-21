@@ -4,7 +4,7 @@ import NavBar from "./Navbar";
 import { TripContext } from './UserContext';
 
 function CreateTrip() {
-    const { trip, setTrip } = useContext(TripContext);
+    const { trips, setTrips } = useContext(TripContext);
     const [title, setTitle] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -47,7 +47,7 @@ function CreateTrip() {
             })
             .then(data => {
                 console.log('Trip created:', data);
-                setTrip([...trip, data]);
+                setTrips([...trips, data]);
                 // NOT WORKING ?
                 setTitle("");
                 setStartDate("");

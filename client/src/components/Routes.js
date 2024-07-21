@@ -1,6 +1,7 @@
 import App from "./App"
 import CreateTrip from "./CreateTrip"
 import Trips from "./Trips"
+import AddDestination from "./AddDestination"
 
 const routes = [
     {
@@ -14,6 +15,10 @@ const routes = [
             {
                 path: "/createtrip",
                 element: <CreateTrip />
+            },
+            {
+                path: "/destinations/:tripId",
+                element: <AddDestination />
             }
         ]
     }
