@@ -8,6 +8,8 @@ import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-d
 import { DestinationContext, UserProvider } from "./UserContext";
 import CreateTrip from "./CreateTrip";
 import AddDestination from "./AddDestination";
+import EditTrip from "./EditTrip";
+// import { UserProvider } from './UserContext';
 
 
 function App() {
@@ -29,7 +31,9 @@ function App() {
       });
   }, []);
 
-
+  if (!user) {
+    return <SignIn onSignIn={setUser} />
+  }
 
 
   return (
@@ -42,6 +46,7 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/trips" component={Trips} />
           <Route path="/createtrip" component={CreateTrip} />
+          <Route path="/trips/${tripId}" component={EditTrip} />
           <Route path="/destinations/:tripId" component={AddDestination} />
         </Switch>
 

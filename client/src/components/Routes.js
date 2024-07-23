@@ -2,6 +2,7 @@ import App from "./App"
 import CreateTrip from "./CreateTrip"
 import Trips from "./Trips"
 import AddDestination from "./AddDestination"
+import EditTrip from "./EditTrip"
 
 const routes = [
     {
@@ -19,7 +20,11 @@ const routes = [
             {
                 path: "/destinations/:tripId",
                 element: <AddDestination />
-            }
+            },
+            {
+                path: "/trips/:tripId",
+                element: <EditTrip />
+            },
         ]
     }
 ]

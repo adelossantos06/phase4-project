@@ -12,18 +12,18 @@ from models import User, Trip, Destination
 def index():
     return '<h1>Project Servers</h1>'
 
-# @app.before_request
-# def check_if_logged_in():
-#     open_access_list = [
-#         'signup',
-#         'signin',
-#         'check_session',
-#         'trips'
-#     ]
+@app.before_request
+def check_if_logged_in():
+    open_access_list = [
+        'signup',
+        'signin',
+        'check_session',
+        'trips'
+    ]
 
    
-#     if request.endpoint not in open_access_list and not session.get('user_id'):
-#         return {'error': 'Unauthorized'}, 401
+    if request.endpoint not in open_access_list and not session.get('user_id'):
+        return {'error': 'Unauthorized'}, 401
 
 class Signup(Resource):
     def post(self):
@@ -147,9 +147,14 @@ class TripDetail(Resource):
         trip = Trip.query.get(trip_id)
         if not trip:
             return {'message': 'Trip not found'}, 404
+        
+        
+        Destination.query.filter_by(trip_id=trip_id).delete()
 
+     
         db.session.delete(trip)
         db.session.commit()
+        
         return {}, 204
         
 class TripDestinations(Resource):

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import "./CreateTrip.css";
 import NavBar from "./Navbar";
 import { TripContext } from './UserContext';
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function CreateTrip() {
     const { trips, setTrips } = useContext(TripContext);
@@ -9,6 +10,7 @@ function CreateTrip() {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [description, setDescription] = useState("");
+    const history = useHistory();
 
 
 
@@ -53,6 +55,7 @@ function CreateTrip() {
                 setStartDate("");
                 setEndDate("");
                 setDescription("");
+                history.push("/trips")
             })
             .catch(error => {
                 console.error('API Error:', error);

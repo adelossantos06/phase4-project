@@ -1,6 +1,7 @@
 import React from "react";
 import "./TripCard.css"
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
+import EditTrip from "./EditTrip";
 
 
 function TripCard({ id, title, startDate, endDate, description, handleDelete }) {
@@ -8,11 +9,14 @@ function TripCard({ id, title, startDate, endDate, description, handleDelete }) 
     return (
         <div className="trip-card">
             <h2 className="trip-card-title">{title}</h2>
-            <p>Start Date: {startDate}</p>
-            <p>End Date: {endDate}</p>
-            <p>{description}</p>
+            <p><strong>Start Date: </strong>{startDate}</p>
+            <p><strong>End Date:</strong> {endDate}</p>
+            <p><strong>Description:</strong> {description}</p>
             <div className="button-container">
-                <button className="button edit-trip">Edit Trip Details</button>
+                <NavLink to={`/trips/${id}"`}>
+                    <button className="button edit-trip">Edit Trip Details</button>
+                </NavLink>
+
                 <NavLink
                     to={{
                         pathname: `/destinations/${id}`,
@@ -23,7 +27,7 @@ function TripCard({ id, title, startDate, endDate, description, handleDelete }) 
                 </NavLink>
                 <button onClick={() => handleDelete(id)} className="button delete-trip">Delete Trip</button>
             </div>
-        </div>
+        </div >
     )
 }
 

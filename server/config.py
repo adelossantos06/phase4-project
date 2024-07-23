@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_session import Session
 import secrets
+
 secret_key = secrets.token_hex(16)
 
 # Local imports

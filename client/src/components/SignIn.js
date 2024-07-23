@@ -3,11 +3,11 @@ import { useHistory } from 'react-router-dom';
 import "./SignIn.css";
 import { Formik, Form, Field } from 'formik';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
-import { UserContext } from './UserContext';
+import { UserContext, UserProvider } from './UserContext';
 
 function SignIn({ onSignIn }) {
     const history = useHistory();
-    const { setUsername } = useContext(UserContext)
+    const { setUsername } = useContext(UserProvider)
 
 
     function handleSubmit(values) {

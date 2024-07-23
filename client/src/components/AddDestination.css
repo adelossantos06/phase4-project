@@ -46,3 +46,33 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+.trip-card {
+    display: flex;
+    flex-direction: column;
+    width: 510px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    margin-top: 25px;
+}
+
+.trip-card h2 {
+    margin-top: 0;
+    color: #566176;
+}
+
+.trip-card-title {
+    color: black
+}
+
+.input-error {
+    border: 1px solid red;
+}
+
+.error {
+    color: red;
+    font-size: 0.875rem;
+}
